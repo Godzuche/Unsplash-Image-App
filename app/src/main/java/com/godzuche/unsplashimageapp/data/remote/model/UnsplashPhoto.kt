@@ -1,4 +1,4 @@
-package com.godzuche.unsplashimageapp.data.model
+package com.godzuche.unsplashimageapp.data.remote.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
