@@ -41,6 +41,7 @@ class UnsplashPagingSource(
         }
     }
 
+    // The refresh key is used for subsequent refresh calls to PagingSource.load after the initial load
     override fun getRefreshKey(state: PagingState<Int, UnsplashPhoto>): Int? {
         // We need to get the previous key (or next key if previous is null) of the page
         // that was closest to the most recently accessed index.
