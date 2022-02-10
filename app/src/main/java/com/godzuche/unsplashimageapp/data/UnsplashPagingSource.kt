@@ -3,6 +3,7 @@ package com.godzuche.unsplashimageapp.data
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.godzuche.unsplashimageapp.api.UnsplashApiService
+import com.godzuche.unsplashimageapp.data.UnsplashRepository.Companion.NETWORK_PAGE_SIZE
 import com.godzuche.unsplashimageapp.data.remote.model.UnsplashPhoto
 import retrofit2.HttpException
 import java.io.IOException
@@ -29,7 +30,10 @@ class UnsplashPagingSource(
             LoadResult.Page(
                 data = photos,
                 prevKey = if (position == UNSPLASH_STARTING_PAGE_INDEX) null else position - 1,
-                nextKey = if (photos.isEmpty()) null else position + 1
+                nextKey = if (photos.isEmpty()) null else {
+//                    position + 1
+                    position + (params.loadSize / NETWORK_PAGE_SIZE)
+                }
             )
         } catch (exception: IOException) {
             // This can be thrown when there is no internet connection when making the request
