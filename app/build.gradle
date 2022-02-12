@@ -42,7 +42,7 @@ android {
 
 dependencies {
     def paging_version = "3.1.0"
-    def nav_version = "2.4.0"
+    def nav_version = "2.4.1"
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
@@ -53,11 +53,11 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     // Navigation (Kotlin)
-    implementation("androidx.navigation:navigation-fragment-ktx:2.4.0")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.4.1")
     implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
 
     // Lifecycle
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.4.0"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.4.1"
 
     //Dagger - Hilt
     implementation "com.google.dagger:hilt-android:2.38.1"
@@ -76,4 +76,6 @@ dependencies {
 
     // Paging 3
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
 }
