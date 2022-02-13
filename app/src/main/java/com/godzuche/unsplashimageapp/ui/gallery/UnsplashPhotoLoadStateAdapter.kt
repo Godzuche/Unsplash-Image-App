@@ -10,9 +10,8 @@ class UnsplashPhotoLoadStateAdapter(private val retry: () -> Unit) :
     override fun onCreateViewHolder(
         parent: ViewGroup,
         loadState: LoadState,
-    ): UnsplashPhotoLoadStateViewHolder {
-        return UnsplashPhotoLoadStateViewHolder.create(parent, retry)
-    }
+    ): UnsplashPhotoLoadStateViewHolder =
+        UnsplashPhotoLoadStateViewHolder.create(parent, retry)
 
     override fun onBindViewHolder(holder: UnsplashPhotoLoadStateViewHolder, loadState: LoadState) {
         holder.bind(loadState)
