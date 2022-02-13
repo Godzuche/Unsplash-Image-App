@@ -19,7 +19,7 @@ class GalleryViewModel @Inject constructor(
 ) : ViewModel() {
 
     //    private val currentQuery = MutableStateFlow<String>(DEFAULT_QUERY)
-    private val currentQuery = MutableStateFlow<String>(DEFAULT_QUERY)
+    private val currentQuery = MutableStateFlow(DEFAULT_QUERY)
 
     @ExperimentalCoroutinesApi
     val photosPagingDataFlow = currentQuery.flatMapLatest { queryString ->

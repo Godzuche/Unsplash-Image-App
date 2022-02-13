@@ -1,7 +1,8 @@
 package com.godzuche.unsplashimageapp.ui.gallery
 
 import android.os.Bundle
-import android.view.View
+import android.view.*
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -9,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.godzuche.unsplashimageapp.R
 import com.godzuche.unsplashimageapp.databinding.FragmentGalleryBinding
+import com.godzuche.unsplashimageapp.util.onQueryTextChange
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
@@ -21,10 +23,24 @@ class GalleryFragment : Fragment(R.layout.fragment_gallery) {
     private var _binding: FragmentGalleryBinding? = null
     private val binding get() = _binding!!
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View? {
+        _binding = FragmentGalleryBinding.inflate(inflater, container, false)
+        val view = binding.root
+        return view
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        _binding = FragmentGalleryBinding.bind(view)
 
         val unsplashPhotoAdapter = UnsplashPhotoAdapter()
 
@@ -42,6 +58,36 @@ class GalleryFragment : Fragment(R.layout.fragment_gallery) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.photosPagingDataFlow.collectLatest(unsplashPhotoAdapter::submitData)
             }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+
+        inflater.inflate(R.menu.menu_gallery, menu)
+
+        // Find the search item
+        val searchItem = menu.findItem(R.id.action_search)
+
+        // Reference to the searchView
+        val searchView = searchItem.actionView as SearchView
+
+        searchView.apply {
+            queryHint = "Search Photos"
+//            setIconifiedByDefault(true)
+            onQueryTextChange(binding) { queryText ->
+                // Update search query
+                viewModel.searchPhotos(query = queryText)
+            }
+        }
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return if (item.itemId == R.id.action_search) {
+            true
+        } else {
+            super.onOptionsItemSelected(item)
         }
     }
 
