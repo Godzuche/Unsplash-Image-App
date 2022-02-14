@@ -3,16 +3,19 @@ package com.godzuche.unsplashimageapp.ui.gallery
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.paging.LoadState
 import com.godzuche.unsplashimageapp.R
 import com.godzuche.unsplashimageapp.databinding.FragmentGalleryBinding
 import com.godzuche.unsplashimageapp.util.onQueryTextChange
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -52,6 +55,7 @@ class GalleryFragment : Fragment(R.layout.fragment_gallery) {
                     footer = UnsplashPhotoLoadStateAdapter { unsplashPhotoAdapter.retry() }
                 )
             }
+            btRetry.setOnClickListener { unsplashPhotoAdapter.retry() }
         }
 
         lifecycleScope.launch {
@@ -59,6 +63,32 @@ class GalleryFragment : Fragment(R.layout.fragment_gallery) {
                 viewModel.photosPagingDataFlow.collectLatest(unsplashPhotoAdapter::submitData)
             }
         }
+        lifecycleScope.launch {
+            unsplashPhotoAdapter.loadStateFlow.collect { loadState ->
+                binding.apply {
+                    // Loading
+                    circularProgressBar.isVisible = loadState.source.refresh is LoadState.Loading
+                    // Successful and finished loading
+                    recyclerview.isVisible = loadState.source.refresh is LoadState.NotLoading
+
+                    // Error
+                    btRetry.isVisible = loadState.source.refresh is LoadState.Error
+                    tvError.isVisible = loadState.source.refresh is LoadState.Error
+
+                    // Empty List textView
+                    if (loadState.source.refresh is LoadState.NotLoading &&
+                        loadState.append.endOfPaginationReached &&
+                        unsplashPhotoAdapter.itemCount < 1
+                    ) {
+                        recyclerview.isVisible = false
+                        tvResultNotFound.isVisible = true
+                    } else {
+                        tvResultNotFound.isVisible = false
+                    }
+                }
+            }
+        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

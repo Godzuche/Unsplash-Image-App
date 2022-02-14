@@ -3,6 +3,8 @@ package com.godzuche.unsplashimageapp.ui.gallery
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import coil.transform.CircleCropTransformation
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.godzuche.unsplashimageapp.R
@@ -13,12 +15,13 @@ class UnsplashPhotoViewHolder(private val binding: ItemUnsplashPhotoBinding) :
     RecyclerView.ViewHolder(binding.root) {
     fun bind(unsplashPhoto: UnsplashPhoto) {
         binding.apply {
-            /*imvUnsplashPhoto.load(unsplashPhoto.urls.regular) {
-                    crossfade(true)
+/*            imvUnsplashPhoto.load(unsplashPhoto.urls.regular) {
+                crossfade(true)
 //                    placeholder() could be used to add loading animation drawable
-                    error(R.drawable.ic_broken_image)
-                    build()
-                }*/
+                error(R.drawable.ic_broken_image)
+                transformations(CircleCropTransformation())
+                build()
+            }*/
 
             Glide.with(itemView)
                 .load(unsplashPhoto.urls.regular)
