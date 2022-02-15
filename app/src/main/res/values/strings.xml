@@ -4,4 +4,5 @@
     <string name="retry">Retry</string>
     <string name="no_results_found_for_this_query">No results found for this query</string>
     <string name="search">Search</string>
+    <string name="creator">Photo by %s on Unsplash</string>
 </resources>

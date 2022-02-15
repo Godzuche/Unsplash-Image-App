@@ -2,6 +2,7 @@ package com.godzuche.unsplashimageapp.ui.gallery
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.CircleCropTransformation
@@ -11,8 +12,25 @@ import com.godzuche.unsplashimageapp.R
 import com.godzuche.unsplashimageapp.data.remote.model.UnsplashPhoto
 import com.godzuche.unsplashimageapp.databinding.ItemUnsplashPhotoBinding
 
-class UnsplashPhotoViewHolder(private val binding: ItemUnsplashPhotoBinding) :
+class UnsplashPhotoViewHolder(private val binding: ItemUnsplashPhotoBinding, private val listener: UnsplashPhotoAdapter.OnItemClickListener) :
     RecyclerView.ViewHolder(binding.root) {
+
+    var currentItem: UnsplashPhoto? = null
+
+    init {
+        binding.root.setOnClickListener {
+//            val position = bindingAdapterPosition
+           /* if (position != RecyclerView.NO_POSITION) {
+                // Should be done with an inner class
+                val item = getItem(position)
+                if (item != null) listener.onItemClick(item)
+            }*/
+
+                listener.onItemClick(currentItem!!)
+
+        }
+    }
+
     fun bind(unsplashPhoto: UnsplashPhoto) {
         binding.apply {
 /*            imvUnsplashPhoto.load(unsplashPhoto.urls.regular) {
@@ -35,11 +53,11 @@ class UnsplashPhotoViewHolder(private val binding: ItemUnsplashPhotoBinding) :
     }
 
     companion object {
-        fun create(parent: ViewGroup): UnsplashPhotoViewHolder {
+        fun create(parent: ViewGroup, listener: UnsplashPhotoAdapter.OnItemClickListener): UnsplashPhotoViewHolder {
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_unsplash_photo, parent, false)
             val binding = ItemUnsplashPhotoBinding.bind(view)
-            return UnsplashPhotoViewHolder(binding)
+            return UnsplashPhotoViewHolder(binding, listener)
         }
     }
 }

@@ -9,8 +9,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import com.godzuche.unsplashimageapp.R
+import com.godzuche.unsplashimageapp.data.remote.model.UnsplashPhoto
 import com.godzuche.unsplashimageapp.databinding.FragmentGalleryBinding
 import com.godzuche.unsplashimageapp.util.onQueryTextChange
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,7 +23,7 @@ import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class GalleryFragment : Fragment(R.layout.fragment_gallery) {
+class GalleryFragment : Fragment(), UnsplashPhotoAdapter.OnItemClickListener {
     private val viewModel by viewModels<GalleryViewModel>()
     private var _binding: FragmentGalleryBinding? = null
     private val binding get() = _binding!!
@@ -45,7 +47,7 @@ class GalleryFragment : Fragment(R.layout.fragment_gallery) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val unsplashPhotoAdapter = UnsplashPhotoAdapter()
+        val unsplashPhotoAdapter = UnsplashPhotoAdapter(this)
 
         binding.apply {
             recyclerview.apply {
@@ -64,6 +66,7 @@ class GalleryFragment : Fragment(R.layout.fragment_gallery) {
             }
         }
         lifecycleScope.launch {
+            // Listen for load state
             unsplashPhotoAdapter.loadStateFlow.collect { loadState ->
                 binding.apply {
                     // Loading
@@ -89,6 +92,11 @@ class GalleryFragment : Fragment(R.layout.fragment_gallery) {
             }
         }
 
+    }
+
+    override fun onItemClick(photo: UnsplashPhoto) {
+        val action = GalleryFragmentDirections.actionGalleryFragmentToDetailsFragment(photo)
+        findNavController().navigate(action)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
