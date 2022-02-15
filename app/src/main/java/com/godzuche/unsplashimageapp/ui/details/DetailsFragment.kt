@@ -80,7 +80,7 @@ class DetailsFragment : Fragment() {
             val intent = Intent(Intent.ACTION_VIEW, uri)
 
             tvCreator.apply {
-                text = getString(R.string.creator, {photo.user.username})
+                text = getString(R.string.creator, photo.user.username)
                 setOnClickListener {
                     context.startActivity(intent)
                 }
