@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.godzuche.unsplashimageapp.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,9 +25,11 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_main) as NavHostFragment
         navController = navHostFragment.navController
 
+        val appBarConfiguration = AppBarConfiguration(navController.graph)
+
         binding.apply {
             setSupportActionBar(toolbarMain)
-            setupActionBarWithNavController(navController)
+            setupActionBarWithNavController(navController, appBarConfiguration)
         }
     }
 
