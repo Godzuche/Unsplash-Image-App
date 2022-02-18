@@ -58,6 +58,10 @@ dependencies {
 
     // Lifecycle
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.4.1"
+    // ViewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1"
+    // Saved state module for ViewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.4.1"
 
     //Dagger - Hilt
     implementation "com.google.dagger:hilt-android:2.38.1"
@@ -77,5 +81,5 @@ dependencies {
     // Paging 3
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
 
-    implementation ("com.github.bumptech.glide:glide:4.12.0")
+    implementation("com.github.bumptech.glide:glide:4.12.0")
 }
