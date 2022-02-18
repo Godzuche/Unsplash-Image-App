@@ -19,12 +19,14 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class GalleryFragment : Fragment(), UnsplashPhotoAdapter.OnItemClickListener {
-    private val viewModel by viewModels<GalleryViewModel>()
+    private val viewModel: GalleryViewModel by viewModels()
     private var _binding: FragmentGalleryBinding? = null
     private val binding get() = _binding!!
 
@@ -65,6 +67,19 @@ class GalleryFragment : Fragment(), UnsplashPhotoAdapter.OnItemClickListener {
                 viewModel.photosPagingDataFlow.collectLatest(unsplashPhotoAdapter::submitData)
             }
         }
+
+        // This block helps trigger the search event after restoration from system initiated process death
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.state
+                    .map { it.query }
+                    .distinctUntilChanged()
+                    .collect { currentQueryString ->
+                        viewModel.accept(UiAction.Search(currentQueryString))
+                    }
+            }
+        }
+
         lifecycleScope.launch {
             // Listen for load state
             unsplashPhotoAdapter.loadStateFlow.collect { loadState ->
@@ -91,7 +106,6 @@ class GalleryFragment : Fragment(), UnsplashPhotoAdapter.OnItemClickListener {
                 }
             }
         }
-
     }
 
     override fun onItemClick(photo: UnsplashPhoto) {
@@ -115,7 +129,7 @@ class GalleryFragment : Fragment(), UnsplashPhotoAdapter.OnItemClickListener {
 //            setIconifiedByDefault(true)
             onQueryTextChange(binding) { queryText ->
                 // Update search query
-                viewModel.searchPhotos(query = queryText)
+                viewModel.accept(UiAction.Search(query = queryText))
             }
         }
 
