@@ -5,8 +5,11 @@ import com.godzuche.unsplashimageapp.databinding.FragmentGalleryBinding
 
 // View Extensions
 
-inline fun SearchView.onQueryTextChange(binding: FragmentGalleryBinding, crossinline listener: (String) -> Unit) {
-    this.setOnQueryTextListener( object : SearchView.OnQueryTextListener {
+inline fun SearchView.onQueryTextChange(
+    binding: FragmentGalleryBinding,
+    crossinline listener: (String) -> Unit,
+) {
+    this.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
             query?.let {
                 binding.recyclerview.scrollToPosition(0)
