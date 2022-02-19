@@ -1,18 +1,21 @@
 package com.godzuche.unsplashimageapp.ui.gallery
 
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.AdapterView
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
-import coil.transform.CircleCropTransformation
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.godzuche.unsplashimageapp.R
 import com.godzuche.unsplashimageapp.data.remote.model.UnsplashPhoto
 import com.godzuche.unsplashimageapp.databinding.ItemUnsplashPhotoBinding
+import com.godzuche.unsplashimageapp.util.BlurHashDecoder
 
-class UnsplashPhotoViewHolder(private val binding: ItemUnsplashPhotoBinding, private val listener: UnsplashPhotoAdapter.OnItemClickListener) :
+class UnsplashPhotoViewHolder(
+    private val binding: ItemUnsplashPhotoBinding,
+    private val listener: UnsplashPhotoAdapter.OnItemClickListener,
+) :
     RecyclerView.ViewHolder(binding.root) {
 
     var currentItem: UnsplashPhoto? = null
@@ -20,13 +23,13 @@ class UnsplashPhotoViewHolder(private val binding: ItemUnsplashPhotoBinding, pri
     init {
         binding.root.setOnClickListener {
 //            val position = bindingAdapterPosition
-           /* if (position != RecyclerView.NO_POSITION) {
-                // Should be done with an inner class
-                val item = getItem(position)
-                if (item != null) listener.onItemClick(item)
-            }*/
+            /* if (position != RecyclerView.NO_POSITION) {
+                 // Should be done with an inner class
+                 val item = getItem(position)
+                 if (item != null) listener.onItemClick(item)
+             }*/
 
-                listener.onItemClick(currentItem!!)
+            listener.onItemClick(currentItem!!)
 
         }
     }
@@ -41,11 +44,16 @@ class UnsplashPhotoViewHolder(private val binding: ItemUnsplashPhotoBinding, pri
                 build()
             }*/
 
+            var bitmap: Bitmap? = null
+            bitmap = BlurHashDecoder.decode(unsplashPhoto.blurHash, 2, 1)
+            val drawable = BitmapDrawable(itemView.context.applicationContext.resources, bitmap)
+
             Glide.with(itemView)
-                .load(unsplashPhoto.urls.regular)
+                .load(unsplashPhoto.urls.small)
                 .centerCrop()
                 .transition(DrawableTransitionOptions.withCrossFade())
-                .error(R.drawable.ic_broken_image)
+                .placeholder(drawable)
+//                .error(R.drawable.ic_broken_image)
                 .into(imvUnsplashPhoto)
 
             tvUsername.text = unsplashPhoto.user.username
@@ -53,7 +61,10 @@ class UnsplashPhotoViewHolder(private val binding: ItemUnsplashPhotoBinding, pri
     }
 
     companion object {
-        fun create(parent: ViewGroup, listener: UnsplashPhotoAdapter.OnItemClickListener): UnsplashPhotoViewHolder {
+        fun create(
+            parent: ViewGroup,
+            listener: UnsplashPhotoAdapter.OnItemClickListener,
+        ): UnsplashPhotoViewHolder {
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_unsplash_photo, parent, false)
             val binding = ItemUnsplashPhotoBinding.bind(view)

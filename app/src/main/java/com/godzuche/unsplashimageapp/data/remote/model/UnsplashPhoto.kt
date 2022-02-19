@@ -1,11 +1,14 @@
 package com.godzuche.unsplashimageapp.data.remote.model
 
 import android.os.Parcelable
+import com.squareup.moshi.Json
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class UnsplashPhoto(
     val id: String,
+    @Json(name = "blur_hash")
+    val blurHash: String,
     val description: String?,
     val urls: UnsplashPhotoUrls,
     val user: UnsplashUser,

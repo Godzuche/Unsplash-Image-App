@@ -6,10 +6,11 @@
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/UnsplashImageApp/app/src/main/res/drawable/gradient.xml" value="0.1" />
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/UnsplashImageApp/app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.1" />
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/UnsplashImageApp/app/src/main/res/drawable/ic_broken_image.xml" value="0.1005" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/UnsplashImageApp/app/src/main/res/drawable/ic_search.xml" value="0.1" />
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/UnsplashImageApp/app/src/main/res/layout/activity_main.xml" value="0.15818725951261223" />
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/UnsplashImageApp/app/src/main/res/layout/fragment_detail.xml" value="0.15818725951261223" />
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/UnsplashImageApp/app/src/main/res/layout/fragment_gallery.xml" value="0.12" />
-        <entry key="..\:/Users/Administrator/AndroidStudioProjects/UnsplashImageApp/app/src/main/res/layout/item_unsplash_photo.xml" value="0.33" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/UnsplashImageApp/app/src/main/res/layout/item_unsplash_photo.xml" value="0.2" />
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/UnsplashImageApp/app/src/main/res/layout/unsplash_photo_load_state_footer_view_item.xml" value="0.2" />
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/UnsplashImageApp/app/src/main/res/menu/menu_gallery.xml" value="0.15818725951261223" />
       </map>

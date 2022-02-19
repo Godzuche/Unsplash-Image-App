@@ -2,6 +2,7 @@ package com.godzuche.unsplashimageapp.ui.gallery
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -16,14 +17,12 @@ import com.godzuche.unsplashimageapp.data.remote.model.UnsplashPhoto
 import com.godzuche.unsplashimageapp.databinding.FragmentGalleryBinding
 import com.godzuche.unsplashimageapp.util.onQueryTextChange
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
-@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class GalleryFragment : Fragment(), UnsplashPhotoAdapter.OnItemClickListener {
     private val viewModel: GalleryViewModel by viewModels()
@@ -103,6 +102,19 @@ class GalleryFragment : Fragment(), UnsplashPhotoAdapter.OnItemClickListener {
                     } else {
                         tvResultNotFound.isVisible = false
                     }
+
+                    // Toast on any error, regardless of whether it came from RemoteMediator or PagingSource
+                    val errorState = loadState.source.append as? LoadState.Error
+                        ?: loadState.source.prepend as? LoadState.Error
+                        ?: loadState.append as? LoadState.Error
+                        ?: loadState.prepend as? LoadState.Error
+                    errorState?.let {
+                        Toast.makeText(
+                            requireActivity(),
+                            "\uD83D\uDE28 Wooops ${it.error}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
                 }
             }
         }
@@ -125,7 +137,7 @@ class GalleryFragment : Fragment(), UnsplashPhotoAdapter.OnItemClickListener {
         val searchView = searchItem.actionView as SearchView
 
         searchView.apply {
-            queryHint = "Search Photos"
+            queryHint = "Search Photos..."
 //            setIconifiedByDefault(true)
             onQueryTextChange(binding) { queryText ->
                 // Update search query
