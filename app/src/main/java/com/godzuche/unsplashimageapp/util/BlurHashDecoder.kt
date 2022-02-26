@@ -1,12 +1,7 @@
 package com.godzuche.unsplashimageapp.util
 
-import android.graphics.Bitmap
-import android.graphics.Color
-import kotlin.math.cos
-import kotlin.math.pow
-import kotlin.math.withSign
-
 object BlurHashDecoder {
+/*
 
     // cache Math.cos() calculations to improve performance.
     // The number of calculations can be huge for many bitmaps: width * height * numCompX * numCompY * 2 * nBitmaps
@@ -14,23 +9,27 @@ object BlurHashDecoder {
     private val cacheCosinesX = HashMap<Int, DoubleArray>()
     private val cacheCosinesY = HashMap<Int, DoubleArray>()
 
+    */
     /**
      * Clear calculations stored in memory cache.
      * The cache is not big, but will increase when many image sizes are used,
      * if the app needs memory it is recommended to clear it.
-     */
+     *//*
+
     fun clearCache() {
         cacheCosinesX.clear()
         cacheCosinesY.clear()
     }
 
+    */
     /**
      * Decode a blur hash into a new bitmap.
      *
      * @param useCache use in memory cache for the calculated math, reused by images with same size.
      *                 if the cache does not exist yet it will be created and populated with new calculations.
      *                 By default it is true.
-     */
+     *//*
+
     fun decode(blurHash: String?, width: Int, height: Int, punch: Float = 1f, useCache: Boolean = true): Bitmap? {
         if (blurHash == null || blurHash.length < 6) {
             return null
@@ -181,5 +180,6 @@ object BlurHashDecoder {
     )
         .mapIndexed { i, c -> c to i }
         .toMap()
+*/
 
 }

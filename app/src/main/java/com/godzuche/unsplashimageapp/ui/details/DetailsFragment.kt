@@ -44,9 +44,11 @@ class DetailsFragment : Fragment() {
             val photo = args.photo
 
             Glide.with(this@DetailsFragment)
-                .load(photo.urls.regular)
+                .load(photo.urls.full)
+                .centerInside()
+                .centerCrop()
                 .error(R.drawable.ic_broken_image)
-                .listener(object: RequestListener<Drawable> {
+                .listener(object : RequestListener<Drawable> {
                     override fun onLoadFailed(
                         e: GlideException?,
                         model: Any?,
@@ -73,6 +75,26 @@ class DetailsFragment : Fragment() {
                     }
                 })
                 .into(binding.imvDetailImage)
+
+
+/*            imvDetailImage.load(photo.urls.regular) {
+//                placeholder()
+                crossfade(true)
+                listener(
+                    onStart = {
+                              progressBar.isVisible = true
+                    },
+                    onCancel = {},
+                    onError = { request, throwable ->
+                        progressBar.isVisible = false
+                    },
+                    onSuccess = { request, metadata ->
+                        progressBar.isVisible = false
+                        tvCreator.isVisible = true
+                        tvDescription.isVisible = photo.description != null
+                    }
+                )
+            }*/
 
             tvDescription.text = photo.description
 

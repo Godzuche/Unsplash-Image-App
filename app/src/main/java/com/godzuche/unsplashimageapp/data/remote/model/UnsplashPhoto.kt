@@ -7,6 +7,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class UnsplashPhoto(
     val id: String,
+    val color: String,
     @Json(name = "blur_hash")
     val blurHash: String,
     val description: String?,
@@ -27,7 +28,16 @@ data class UnsplashPhoto(
     data class UnsplashUser(
         val name: String,
         val username: String,
+        @Json(name = "profile_image")
+        val profileImage: UnsplashUserProfileImage
     ) : Parcelable {
         val attributionUrl get() = "https://unsplash.com/$username?utm_source=Images_App&utm_medium=referral"
+
+        @Parcelize
+        data class UnsplashUserProfileImage(
+            val small: String,
+            val medium: String,
+            val large: String
+        ): Parcelable
     }
 }

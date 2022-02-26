@@ -1,7 +1,5 @@
 package com.godzuche.unsplashimageapp.ui.gallery
 
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -10,7 +8,6 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.godzuche.unsplashimageapp.R
 import com.godzuche.unsplashimageapp.data.remote.model.UnsplashPhoto
 import com.godzuche.unsplashimageapp.databinding.ItemUnsplashPhotoBinding
-import com.godzuche.unsplashimageapp.util.BlurHashDecoder
 
 class UnsplashPhotoViewHolder(
     private val binding: ItemUnsplashPhotoBinding,
@@ -36,27 +33,60 @@ class UnsplashPhotoViewHolder(
 
     fun bind(unsplashPhoto: UnsplashPhoto) {
         binding.apply {
+
+            /*         var bitmap: Bitmap? = null
+                     bitmap = BlurHashDecoder.decode(unsplashPhoto.blurHash, 3, 2)
+                     val drawable = BitmapDrawable(itemView.context.applicationContext.resources, bitmap)*/
+
+            // Using Coil
 /*            imvUnsplashPhoto.load(unsplashPhoto.urls.regular) {
                 crossfade(true)
-//                    placeholder() could be used to add loading animation drawable
-                error(R.drawable.ic_broken_image)
-                transformations(CircleCropTransformation())
+                placeholder(drawable) *//*could be used to add loading animation drawable*//*
+                error(drawable)
+                transformations(RoundedCornersTransformation())
                 build()
             }*/
 
-            var bitmap: Bitmap? = null
-            bitmap = BlurHashDecoder.decode(unsplashPhoto.blurHash, 2, 1)
-            val drawable = BitmapDrawable(itemView.context.applicationContext.resources, bitmap)
 
+            // Using Glide
             Glide.with(itemView)
                 .load(unsplashPhoto.urls.small)
                 .centerCrop()
                 .transition(DrawableTransitionOptions.withCrossFade())
-                .placeholder(drawable)
-//                .error(R.drawable.ic_broken_image)
+//                .placeholder(R.drawable.ic_broken_image)
+                .error(R.drawable.ic_broken_image)
                 .into(imvUnsplashPhoto)
 
             tvUsername.text = unsplashPhoto.user.username
+
+            Glide.with(itemView)
+                .load(unsplashPhoto.user.profileImage.medium)
+                .circleCrop()
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .placeholder(R.drawable.ic_baseline_person_24)
+                .error(R.drawable.ic_baseline_person_24)
+                .into(imvUserProfile)
+
+            /*imvUserProfile.load(unsplashPhoto.user.profileImage.small) {
+                crossfade(true)
+                placeholder(R.drawable.ic_baseline_person_24) *//*could be used to add loading animation drawable*//*
+                error(R.drawable.ic_baseline_person_24)
+                transformations(CircleCropTransformation())
+                listener(
+                    onError = { request, throwable ->
+                        CoroutineScope(Dispatchers.IO).launch{
+                            *//*itemView.context.imageLoader.enqueue(request.newBuilder(itemView.context)
+                                .placeholder(R.drawable.ic_baseline_person_24)
+                                .error(R.drawable.ic_baseline_person_24)
+                                .build())*//*
+                            itemView.context.imageLoader.enqueue(request).await()
+
+                        }
+
+                    }
+                )
+                build()
+            }*/
         }
     }
 

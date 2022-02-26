@@ -89,6 +89,7 @@ class GalleryFragment : Fragment(), UnsplashPhotoAdapter.OnItemClickListener {
                     recyclerview.isVisible = loadState.source.refresh is LoadState.NotLoading
 
                     // Error
+                    imvConnectionError.isVisible = loadState.source.refresh is LoadState.Error
                     btRetry.isVisible = loadState.source.refresh is LoadState.Error
                     tvError.isVisible = loadState.source.refresh is LoadState.Error
 

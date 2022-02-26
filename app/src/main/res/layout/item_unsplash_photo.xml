@@ -29,19 +29,28 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <ImageView
+            android:id="@+id/imv_user_profile"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_margin="8dp"
+            android:importantForAccessibility="no"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:srcCompat="@mipmap/ic_launcher" />
+
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:drawablePadding="4dp"
+            android:layout_marginStart="8dp"
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="1"
             android:textColor="@color/white"
-            app:drawableStartCompat="@drawable/ic_baseline_person_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/imv_user_profile"
+            app:layout_constraintStart_toEndOf="@id/imv_user_profile"
+            app:layout_constraintTop_toTopOf="@id/imv_user_profile"
             tools:text="username" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
