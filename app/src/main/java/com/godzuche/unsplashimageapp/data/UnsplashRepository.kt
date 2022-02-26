@@ -21,7 +21,7 @@ class UnsplashRepository @Inject constructor(
         return Pager(
             config = PagingConfig(
                 pageSize = NETWORK_PAGE_SIZE,
-                maxSize = 100,
+                maxSize = 50,
                 enablePlaceholders = false
             ),
             pagingSourceFactory = {
@@ -31,6 +31,6 @@ class UnsplashRepository @Inject constructor(
     }
 
     companion object {
-        const val NETWORK_PAGE_SIZE = 20
+        const val NETWORK_PAGE_SIZE = 15
     }
 }

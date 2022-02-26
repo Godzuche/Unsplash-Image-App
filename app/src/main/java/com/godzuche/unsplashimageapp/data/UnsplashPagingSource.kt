@@ -9,10 +9,11 @@ import retrofit2.HttpException
 import java.io.IOException
 
 private const val UNSPLASH_STARTING_PAGE_INDEX = 1
+
 class UnsplashPagingSource(
     private val unsplashApiService: UnsplashApiService,
-    private val query: String
-): PagingSource<Int, UnsplashPhoto>() {
+    private val query: String,
+) : PagingSource<Int, UnsplashPhoto>() {
     // This method triggers the Api request and turns the data into pages
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, UnsplashPhoto> {
         // Current page
@@ -29,7 +30,7 @@ class UnsplashPagingSource(
             // Return
             LoadResult.Page(
                 data = photos,
-                prevKey = if (position == UNSPLASH_STARTING_PAGE_INDEX) null else position - 1,
+                prevKey = /*if (position == UNSPLASH_STARTING_PAGE_INDEX) null else position - 1*/ null, // Only paging forward.
                 nextKey = if (photos.isEmpty()) null else {
 //                    position + 1
                     position + (params.loadSize / NETWORK_PAGE_SIZE)

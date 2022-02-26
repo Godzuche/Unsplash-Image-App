@@ -61,14 +61,14 @@ class GalleryFragment : Fragment(), UnsplashPhotoAdapter.OnItemClickListener {
             btRetry.setOnClickListener { unsplashPhotoAdapter.retry() }
         }
 
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.photosPagingDataFlow.collectLatest(unsplashPhotoAdapter::submitData)
             }
         }
 
         // This block helps trigger the search event after restoration from system initiated process death
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.state
                     .map { it.query }
@@ -79,9 +79,9 @@ class GalleryFragment : Fragment(), UnsplashPhotoAdapter.OnItemClickListener {
             }
         }
 
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             // Listen for load state
-            unsplashPhotoAdapter.loadStateFlow.collect { loadState ->
+            unsplashPhotoAdapter.loadStateFlow.collectLatest { loadState ->
                 binding.apply {
                     // Loading
                     circularProgressBar.isVisible = loadState.source.refresh is LoadState.Loading
@@ -119,6 +119,13 @@ class GalleryFragment : Fragment(), UnsplashPhotoAdapter.OnItemClickListener {
                 }
             }
         }
+
+        // Refreshing the layout on swipe
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            unsplashPhotoAdapter.refresh()
+            binding.swipeRefreshLayout.isRefreshing = false
+        }
+
     }
 
     override fun onItemClick(photo: UnsplashPhoto) {
